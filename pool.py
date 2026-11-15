@@ -30,6 +30,7 @@ ATOMIC = 10 ** 8
 JOBS_KEPT = 4
 EXTERNAL_NODES = "https://node01.bytecoin.org:8091/json_rpc,https://node02.bytecoin.org:8091/json_rpc"
 CONFIRM_DEPTH = 2
+MAX_LAG = 2
 
 
 # ---------------------------------------------------------------- node / wallet RPC
@@ -65,10 +66,13 @@ def block_hash_at(node, height):
 
 
 def network_agrees(local, externals):
-    """-> (True if an outside node has our block CONFIRM_DEPTH below our top, note)."""
-    ref = local.call("get_status")["top_block_height"] - CONFIRM_DEPTH
+    """-> (True if blocks may be submitted, note). As in bcn-stratum: an outside node must have our block
+    CONFIRM_DEPTH below our top, and no outside node on our chain may be MAX_LAG or more blocks above us
+    (then our node misses the network's newest blocks and anything found now would be stale)."""
+    our_top = local.call("get_status")["top_block_height"]
+    ref = our_top - CONFIRM_DEPTH
     ours = block_hash_at(local, ref)
-    notes = []
+    notes, confirmed, ahead = [], None, None
     for ext in externals:
         try:
             top = ext.call("get_status")["top_block_height"]
@@ -76,11 +80,18 @@ def network_agrees(local, externals):
                 same = block_hash_at(ext, top) == block_hash_at(local, top)
                 notes.append("%s %s at %d" % (ext.url, "behind" if same else "ON ANOTHER CHAIN", top))
                 continue
-            if block_hash_at(ext, ref) == ours:
-                return True, "%s has our block %d" % (ext.url, ref)
-            notes.append("%s ON ANOTHER CHAIN at %d" % (ext.url, ref))
+            if block_hash_at(ext, ref) != ours:
+                notes.append("%s ON ANOTHER CHAIN at %d" % (ext.url, ref))
+                continue
+            confirmed = confirmed or ext.url
+            if top - our_top >= MAX_LAG and (ahead is None or top > ahead[1]):
+                ahead = (ext.url, top)
         except Exception as ex:
             notes.append("%s: %s" % (ext.url, type(ex).__name__))
+    if confirmed and ahead:
+        return False, "OUR NODE IS BEHIND: %s is at %d, ours at %d" % (ahead[0], ahead[1], our_top)
+    if confirmed:
+        return True, "%s has our block %d" % (confirmed, ref)
     return False, "; ".join(notes) or "no outside nodes"
 
 

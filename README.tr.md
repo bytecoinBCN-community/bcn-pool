@@ -13,7 +13,7 @@ Bu, topluluğun bağımsız bir projesidir; Bytecoin kurucuları ve bcndev ile b
 - **Vardiff:** her bağlantı, yaklaşık 15 saniyede bir share gelecek şekilde bir share zorluğu alır.
 - **PPLNS:** bir bloğun ödülü, ondan önceki 2 × ağ zorluğu kadar en yeni share işine bölünür. Blok 20 onaya ulaşınca hesaplara yazılır; ana zincirden çıkan blok hiçbir şey kazandırmaz.
 - **Ödemeler:** her saat, en az 0,1 BCN olan bakiyeler için, herkese tek bir işlemle. Havuz hiçbir şey almaz: bu işlemin ağ ücreti ödemelerden orantılı olarak düşülür. walletd'nin ödeme yapamadığı bir adres atlanır ve işaretlenir, diğerleri yine ödemesini alır.
-- **Bölünme koruması:** bloklar yalnızca dış bir düğüm (varsayılan olarak node01/node02.bytecoin.org) tepemizin iki altındaki bloğumuza sahipken gönderilir; böylece ağdan kopmuş bir havuz özel bir zincir kuramaz. Aynı koruma [bcn-stratum](https://github.com/bytecoinBCN-community/bcn-stratum) içinde de var.
+- **Bölünme koruması:** bloklar yalnızca dış bir düğüm (varsayılan olarak node01/node02.bytecoin.org) tepemizin iki altındaki bloğumuza sahipken gönderilir; böylece ağdan kopmuş bir havuz özel bir zincir kuramaz. Aynı koruma [bcn-stratum](https://github.com/bytecoinBCN-community/bcn-stratum) içinde de var. Zincirimizdeki bir dış düğüm düğümümüzden iki veya daha fazla blok öndeyken madencilik de duraklar; böylece havuz eski bir tepe üzerinde kazmaz.
 
 ## Dosyalar
 

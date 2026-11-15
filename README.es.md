@@ -13,7 +13,7 @@ Es un proyecto independiente de la comunidad, sin relación con los fundadores d
 - **Vardiff:** cada conexión recibe una dificultad de share pensada para un share cada 15 segundos aproximadamente.
 - **PPLNS:** la recompensa de un bloque se reparte entre el trabajo más reciente equivalente a 2 × la dificultad de la red antes del bloque. Se acredita cuando el bloque tiene 20 confirmaciones; un bloque que sale de la cadena principal no gana nada.
 - **Pagos:** cada hora, para saldos de al menos 0,1 BCN, en una sola transacción para todos. El pool no se queda nada: la comisión de red de esa transacción se descuenta de los pagos de forma proporcional. Una dirección a la que walletd no puede pagar se omite y se marca; los demás cobran igual.
-- **Protección contra particiones:** los bloques se envían solo mientras un nodo externo (por defecto node01/node02.bytecoin.org) tiene nuestro bloque dos alturas por debajo de nuestra cima, así que un pool aislado no puede construir una cadena privada. La misma protección está en [bcn-stratum](https://github.com/bytecoinBCN-community/bcn-stratum).
+- **Protección contra particiones:** los bloques se envían solo mientras un nodo externo (por defecto node01/node02.bytecoin.org) tiene nuestro bloque dos alturas por debajo de nuestra cima, así que un pool aislado no puede construir una cadena privada. La misma protección está en [bcn-stratum](https://github.com/bytecoinBCN-community/bcn-stratum). La minería también se detiene mientras un nodo externo en nuestra cadena va dos o más bloques por delante del nuestro, para no minar sobre una cima obsoleta.
 
 ## Archivos
 

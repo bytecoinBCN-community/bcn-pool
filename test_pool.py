@@ -142,5 +142,26 @@ fp.can_mine = True
 fp.loop.run_until_complete(s.on_login(3, {"login": "2good.rig1", "pass": "d=20000"}))
 check("login with address.worker and d= accepted", s.address == "2good" and s.worker == "rig1" and s.diff == 20000)
 
+# ---- partition guard (same rules as bcn-stratum)
+class Node:
+    def __init__(self, url, chain):
+        self.url, self.chain = url, chain
+
+    def call(self, method, params=None):
+        if method == "get_status":
+            return {"top_block_height": max(self.chain)}
+        h = params["height"] - 1
+        return {"block_header": {"height": h, "hash": self.chain[h]}}
+
+
+base = {h: "c%d" % h for h in range(100, 121)}   # our tip 120
+me = Node("local", base)
+check("guard: outside node with our chain confirms", P.network_agrees(me, [Node("n1", dict(base))])[0])
+check("guard: outside node 1 block ahead is fine", P.network_agrees(me, [Node("n1", {**base, 121: "x"})])[0])
+r = P.network_agrees(me, [Node("n1", {**base, 121: "x", 122: "y"})])
+check("guard: outside node 2 blocks ahead on our chain pauses", not r[0] and "BEHIND" in r[1])
+r = P.network_agrees(me, [Node("n1", {**{h: base[h] for h in range(100, 111)}, **{h: "o%d" % h for h in range(111, 119)}})])
+check("guard: network on another chain pauses", not r[0] and "ANOTHER CHAIN" in r[1])
+
 print("POOL TEST", "PASSED" if ok else "FAILED")
 raise SystemExit(0 if ok else 1)

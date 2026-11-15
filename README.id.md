@@ -13,7 +13,7 @@ Ini adalah proyek independen komunitas, tidak berafiliasi dengan para pendiri By
 - **Vardiff:** setiap koneksi mendapat tingkat kesulitan share yang menargetkan sekitar satu share tiap 15 detik.
 - **PPLNS:** hadiah sebuah blok dibagi atas pekerjaan terbaru sebesar 2 × kesulitan jaringan sebelum blok itu. Hadiah dikreditkan saat blok sudah sedalam 20 blok; blok yang keluar dari rantai utama tidak menghasilkan apa-apa.
 - **Pembayaran:** tiap jam untuk saldo minimal 0,1 BCN, dalam satu transaksi untuk semuanya. Pool tidak mengambil apa pun: biaya jaringan transaksi itu diambil dari pembayaran secara proporsional. Alamat yang tidak bisa dibayar oleh walletd dilewati dan ditandai, yang lain tetap dibayar.
-- **Pelindung partisi:** blok hanya dikirim selama node luar (bawaan node01/node02.bytecoin.org) memiliki blok kami dua ketinggian di bawah puncak kami, sehingga pool yang terputus tidak bisa membangun rantai pribadi. Pelindung yang sama ada di [bcn-stratum](https://github.com/bytecoinBCN-community/bcn-stratum).
+- **Pelindung partisi:** blok hanya dikirim selama node luar (bawaan node01/node02.bytecoin.org) memiliki blok kami dua ketinggian di bawah puncak kami, sehingga pool yang terputus tidak bisa membangun rantai pribadi. Pelindung yang sama ada di [bcn-stratum](https://github.com/bytecoinBCN-community/bcn-stratum). Penambangan juga berhenti selama node luar di rantai kami dua blok atau lebih di depan node kami, sehingga pool tidak menambang di puncak yang usang.
 
 ## File
 

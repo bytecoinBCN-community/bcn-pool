@@ -13,7 +13,7 @@ Um pool de mineração aberto de Bytecoin (BCN) com **0% de taxa** e pagamentos 
 - **Vardiff:** cada conexão recebe uma dificuldade de share pensada para um share a cada 15 segundos, mais ou menos.
 - **PPLNS:** a recompensa de um bloco é dividida pelo trabalho mais recente equivalente a 2 × a dificuldade da rede antes dele. É creditada quando o bloco tem 20 confirmações; um bloco que sai da cadeia principal não rende nada.
 - **Pagamentos:** de hora em hora, para saldos a partir de 0,1 BCN, numa única transação para todos. O pool não fica com nada: a taxa de rede dessa transação é descontada dos pagamentos em proporção. Um endereço para o qual o walletd não consegue pagar é pulado e marcado; os demais recebem normalmente.
-- **Proteção contra partição:** os blocos só são enviados enquanto um nó externo (por padrão node01/node02.bytecoin.org) tem o nosso bloco duas alturas abaixo do nosso topo, então um pool isolado não consegue construir uma cadeia privada. A mesma proteção está no [bcn-stratum](https://github.com/bytecoinBCN-community/bcn-stratum).
+- **Proteção contra partição:** os blocos só são enviados enquanto um nó externo (por padrão node01/node02.bytecoin.org) tem o nosso bloco duas alturas abaixo do nosso topo, então um pool isolado não consegue construir uma cadeia privada. A mesma proteção está no [bcn-stratum](https://github.com/bytecoinBCN-community/bcn-stratum). A mineração também pausa enquanto um nó externo na nossa cadeia estiver dois ou mais blocos à frente do nosso, para não minerar sobre um topo desatualizado.
 
 ## Arquivos
 

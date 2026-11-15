@@ -13,7 +13,7 @@ Pool đào Bytecoin (BCN) mở với **phí 0%** và trả thưởng **PPLNS**. 
 - **Vardiff:** mỗi kết nối nhận một độ khó share sao cho khoảng 15 giây có một share.
 - **PPLNS:** phần thưởng của một khối được chia theo khối lượng công việc mới nhất bằng 2 × độ khó mạng trước khối đó. Phần thưởng được ghi có khi khối đã sâu 20 khối; khối rời khỏi chuỗi chính không được trả gì.
 - **Trả thưởng:** mỗi giờ cho số dư từ 0,1 BCN trở lên, bằng một giao dịch cho tất cả. Pool không giữ lại gì: phí mạng của giao dịch đó được trừ vào các khoản trả theo tỷ lệ. Địa chỉ mà walletd không thể trả được sẽ bị bỏ qua và đánh dấu, những người khác vẫn được trả.
-- **Bảo vệ chống phân tách:** khối chỉ được gửi khi một nút bên ngoài (mặc định node01/node02.bytecoin.org) có khối của chúng tôi ở hai độ cao dưới đỉnh, nên pool bị cô lập không thể dựng chuỗi riêng. Cơ chế bảo vệ tương tự có trong [bcn-stratum](https://github.com/bytecoinBCN-community/bcn-stratum).
+- **Bảo vệ chống phân tách:** khối chỉ được gửi khi một nút bên ngoài (mặc định node01/node02.bytecoin.org) có khối của chúng tôi ở hai độ cao dưới đỉnh, nên pool bị cô lập không thể dựng chuỗi riêng. Cơ chế bảo vệ tương tự có trong [bcn-stratum](https://github.com/bytecoinBCN-community/bcn-stratum). Việc đào cũng tạm dừng khi một nút bên ngoài trên chuỗi của chúng tôi đi trước nút của chúng tôi từ hai khối trở lên, để pool không đào trên đỉnh cũ.
 
 ## Tệp
 

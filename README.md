@@ -13,7 +13,7 @@ This is an independent community project, not affiliated with the Bytecoin found
 - **Vardiff:** each connection gets a share difficulty that aims at one share about every 15 seconds.
 - **PPLNS:** a block's reward is split over the newest 2 × network difficulty of share work before it. It is credited when the block is 20 deep; a block that leaves the main chain earns nothing.
 - **Payouts:** hourly, for balances of at least 0.1 BCN, in one transaction to all of them. The pool keeps nothing: the network fee of that transaction is taken from the payouts in proportion. An address that walletd cannot pay to is skipped and marked, the others are still paid.
-- **Partition guard:** blocks are submitted only while an outside node (node01/node02.bytecoin.org by default) has our block two heights below our top, so a cut-off pool cannot build a private chain. The same guard is in [bcn-stratum](https://github.com/bytecoinBCN-community/bcn-stratum).
+- **Partition guard:** blocks are submitted only while an outside node (node01/node02.bytecoin.org by default) has our block two heights below our top, so a cut-off pool cannot build a private chain. The same guard is in [bcn-stratum](https://github.com/bytecoinBCN-community/bcn-stratum). Mining also pauses while an outside node on our chain is two or more blocks ahead of our node, so the pool does not mine on a stale top.
 
 ## Files
 
