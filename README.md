@@ -1,5 +1,7 @@
 # bcn-pool
 
+**English** · [Українська](README.uk.md) · [Español](README.es.md) · [Português](README.pt.md) · [Türkçe](README.tr.md) · [Bahasa Indonesia](README.id.md) · [Tiếng Việt](README.vi.md) · [中文](README.zh.md)
+
 An open Bytecoin (BCN) mining pool with a **0% fee** and **PPLNS** payouts. It runs at <https://pool.bytecoin.community> (stratum `pool.bytecoin.community:3333`).
 
 This is an independent community project, not affiliated with the Bytecoin founders or bcndev.
