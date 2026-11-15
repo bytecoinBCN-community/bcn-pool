@@ -14,26 +14,28 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-ap
 a{color:var(--accent)}
 .wrap{max-width:1100px;margin:0 auto;padding:0 16px}
 header{background:var(--navy);color:#fff}
-header .wrap{display:flex;align-items:center;gap:12px;padding:14px 16px;flex-wrap:wrap}
-header img{width:34px;height:34px}
-header b{font-size:18px}
-header nav{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap}
-header nav a{color:#c9d3dd;text-decoration:none;font-size:15px}
+/* spacing by margins, not flex gap: older Gecko (SeaMonkey 2.53, Firefox < 63) ignores gap in flexbox */
+header .wrap{display:flex;align-items:center;padding:14px 16px;flex-wrap:wrap}
+header img{width:34px;height:34px;margin-right:12px}
+header b{font-size:18px;margin-right:12px}
+header nav{margin-left:auto;display:flex;flex-wrap:wrap}
+header nav a{color:#c9d3dd;text-decoration:none;font-size:15px;margin:2px 0 2px 16px}
 .hero{background:var(--navy);color:#fff;padding:20px 0 34px}
 .hero h1{margin:0 0 6px;font-size:32px}
 .hero p{margin:0 0 18px;color:#c9d3dd;max-width:720px}
-.connect{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.connect{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));grid-gap:12px;gap:12px}
 .connect div{background:#1d2f43;border-radius:10px;padding:12px 14px}
 .connect span{display:block;color:#9fb0c2;font-size:13px}
 .connect code{color:#fff;font-size:15px;word-break:break-all}
 main .wrap{padding-top:26px;padding-bottom:40px}
 h2{font-size:22px;margin:30px 0 12px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));grid-gap:12px;gap:12px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
 .stat b{display:block;font-size:22px}
 .stat span{color:var(--muted);font-size:14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
-.lookup{display:flex;gap:8px;flex-wrap:wrap}
+.lookup{display:flex;flex-wrap:wrap;margin:-4px}
+.lookup>*{margin:4px}
 .lookup input{flex:1 1 320px;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:14px ui-monospace,monospace}
 .lookup button{padding:10px 16px;border:0;border-radius:8px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
 .scroll{overflow-x:auto}
