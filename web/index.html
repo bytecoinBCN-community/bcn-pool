@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bytecoin Community Pool</title>
+<meta name="description" content="Open Bytecoin (BCN) mining pool with a 0% fee and PPLNS payouts, run by the Bytecoin community.">
+<link rel="icon" href="favicon.ico">
+<style>
+:root{--bg:#f5f3ed;--card:#fff;--ink:#101b28;--muted:#5b6673;--line:#e6e2d8;--accent:#ff6a55;--ok:#1f9d6b;--warn:#c47a00;--navy:#101b28}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0d151f;--card:#142131;--ink:#e8edf2;--muted:#9aa7b4;--line:#22344a;--ok:#3ddc97;--warn:#f0b44c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+header{background:var(--navy);color:#fff}
+header .wrap{display:flex;align-items:center;gap:12px;padding:14px 16px;flex-wrap:wrap}
+header img{width:34px;height:34px}
+header b{font-size:18px}
+header nav{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap}
+header nav a{color:#c9d3dd;text-decoration:none;font-size:15px}
+.hero{background:var(--navy);color:#fff;padding:20px 0 34px}
+.hero h1{margin:0 0 6px;font-size:32px}
+.hero p{margin:0 0 18px;color:#c9d3dd;max-width:720px}
+.connect{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.connect div{background:#1d2f43;border-radius:10px;padding:12px 14px}
+.connect span{display:block;color:#9fb0c2;font-size:13px}
+.connect code{color:#fff;font-size:15px;word-break:break-all}
+main .wrap{padding-top:26px;padding-bottom:40px}
+h2{font-size:22px;margin:30px 0 12px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.stat b{display:block;font-size:22px}
+.stat span{color:var(--muted);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
+.lookup{display:flex;gap:8px;flex-wrap:wrap}
+.lookup input{flex:1 1 320px;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:14px ui-monospace,monospace}
+.lookup button{padding:10px 16px;border:0;border-radius:8px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--muted);font-weight:600}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.pill{padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600}
+.pending{background:rgba(196,122,0,.15);color:var(--warn)}.confirmed{background:rgba(31,157,107,.15);color:var(--ok)}.orphaned{background:rgba(255,106,85,.15);color:var(--accent)}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+ul.rules{padding-left:20px;margin:0}
+ul.rules li{margin:4px 0}
+#node-warn{display:none;background:rgba(255,106,85,.15);border:1px solid var(--accent);border-radius:10px;padding:12px 14px;margin-bottom:16px}
+footer{border-top:1px solid var(--line);padding:18px 0;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<header><div class="wrap"><img src="logo-192.png" alt=""><b>Bytecoin Community Pool</b>
+<nav><a href="#stats">Pool</a><a href="#miner">Your miner</a><a href="#blocks">Blocks</a><a href="#payments">Payments</a><a href="#rules">Rules</a><a href="https://bytecoin.community/">bytecoin.community</a></nav></div></header>
+
+<div class="hero"><div class="wrap">
+<h1>Mine Bytecoin with 0% fee</h1>
+<p>An open pool run by the Bytecoin community. Every share is checked, rewards are split PPLNS and paid automatically. The pool keeps nothing: network transaction fees are shared by the payouts.</p>
+<div class="connect">
+<div><span>Server</span><code id="host">pool.bytecoin.community:3333</code></div>
+<div><span>Algorithm</span><code>cn/0 (CryptoNight v0)</code></div>
+<div><span>Username</span><code>your BCN address, or address.worker</code></div>
+<div><span>Password</span><code>x &nbsp;(or d=NNNN for a fixed share difficulty)</code></div>
+</div>
+</div></div>
+
+<main><div class="wrap">
+<div id="node-warn">The pool's node is not in sync with the network right now. Shares are still counted, but blocks are not sent until it is.</div>
+
+<h2 id="stats">Pool</h2>
+<div class="stats">
+<div class="stat"><b id="s-hash">—</b><span>pool hashrate</span></div>
+<div class="stat"><b id="s-miners">—</b><span>miners / workers</span></div>
+<div class="stat"><b id="s-net">—</b><span>network hashrate</span></div>
+<div class="stat"><b id="s-height">—</b><span>network height</span></div>
+<div class="stat"><b id="s-blocks">—</b><span>blocks found</span></div>
+<div class="stat"><b id="s-paid">—</b><span>paid to miners</span></div>
+</div>
+<p class="small muted" id="s-updated"></p>
+
+<h2 id="miner">Your miner</h2>
+<div class="card">
+<form class="lookup" id="lookup"><input id="addr" placeholder="Your BCN address" autocomplete="off" spellcheck="false"><button>Show</button></form>
+<div id="miner-out" class="small" style="margin-top:12px"></div>
+</div>
+
+<h2 id="blocks">Blocks found</h2>
+<div class="card scroll"><table><thead><tr><th>Height</th><th>Found</th><th>Reward, BCN</th><th>Status</th><th>Hash</th></tr></thead><tbody id="blocks-rows"><tr><td colspan="5" class="muted">No blocks yet.</td></tr></tbody></table></div>
+
+<h2 id="payments">Payments</h2>
+<div class="card scroll"><table><thead><tr><th>Sent</th><th>Miners</th><th>Amount, BCN</th><th>Transaction</th></tr></thead><tbody id="pay-rows"><tr><td colspan="4" class="muted">No payments yet.</td></tr></tbody></table></div>
+
+<h2 id="rules">How it works</h2>
+<div class="card"><ul class="rules small">
+<li><b>Fee:</b> 0%. The network fee of each payout transaction is taken from that payout's amounts in proportion.</li>
+<li><b>Reward split:</b> PPLNS over the last <span id="r-pplns">2</span>&times; network difficulty of share work before each block.</li>
+<li><b>Maturity:</b> a block is credited once it is <span id="r-conf">20</span> blocks deep; a block that leaves the main chain earns nothing.</li>
+<li><b>Payouts:</b> automatic, about once an hour, for balances of at least <span id="r-min">0.1</span> BCN.</li>
+<li><b>Share difficulty</b> adjusts to your miner to give a share about every 15 seconds. CPU miners (XMRig with <code>"algo": "cn/0"</code>) and CryptoNight ASICs both work.</li>
+<li><b>Fairness:</b> every share is recomputed by the pool. Our own ASIC does not mine here; it mines solo and caps its share of the network. Blocks are sent only while an outside node confirms the pool is on the network's chain.</li>
+<li>Run by the Bytecoin community, not by the Bytecoin founders. <a href="https://github.com/bytecoinBCN-community">Source code</a>.</li>
+</ul></div>
+</div></main>
+<footer><div class="wrap">Bytecoin Community Pool · <a href="https://explorer.bytecoin.community/">Explorer</a> · <a href="https://bytecoin.community/">bytecoin.community</a></div></footer>
+
+<script>
+'use strict';
+var EXP='https://explorer.bytecoin.community/#/';
+function $(id){return document.getElementById(id)}
+function bcn(a){var s=String(a||0);while(s.length<9)s='0'+s;var i=s.slice(0,-8),f=s.slice(-8).replace(/0+$/,'');return i+(f?'.'+f:'')}
+function hr(h){h=Number(h)||0;if(h>=1e6)return (h/1e6).toFixed(2)+' MH/s';if(h>=1e3)return (h/1e3).toFixed(1)+' kH/s';return h+' H/s'}
+function ago(t){var s=Math.max(0,Date.now()/1000-t);if(s<90)return Math.round(s)+' s ago';if(s<5400)return Math.round(s/60)+' min ago';if(s<172800)return Math.round(s/3600)+' h ago';return Math.round(s/86400)+' days ago'}
+function cell(tr,text,cls,href){var td=document.createElement('td');if(href){var a=document.createElement('a');a.href=href;a.textContent=text;a.className='mono';td.appendChild(a)}else{td.textContent=text}if(cls)td.className=cls;tr.appendChild(td);return td}
+function get(url){return fetch(url,{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
+function load(){
+  get('api/stats.json').then(function(s){
+    $('s-hash').textContent=hr(s.pool.hashrate);
+    $('s-miners').textContent=s.pool.miners+' / '+s.pool.workers;
+    $('s-net').textContent=hr(s.network.hashrate);
+    $('s-height').textContent=Number(s.network.height).toLocaleString('en');
+    $('s-blocks').textContent=s.pool.blocks_found;
+    $('s-paid').textContent=bcn(s.pool.total_paid)+' BCN';
+    $('s-updated').textContent='Updated '+ago(s.updated)+'.';
+    $('r-pplns').textContent=s.pplns_factor;$('r-conf').textContent=s.confirmations;$('r-min').textContent=bcn(s.min_payout);
+    $('node-warn').style.display=s.node_ok?'none':'block';
+    var b=$('blocks-rows');if(s.blocks.length){b.textContent='';s.blocks.forEach(function(x){var tr=document.createElement('tr');
+      cell(tr,Number(x.height).toLocaleString('en'),null,EXP+'block/'+x.height);cell(tr,ago(x.ts));cell(tr,bcn(x.reward));
+      var st=cell(tr,'');var p=document.createElement('span');p.className='pill '+x.status;p.textContent=x.status;st.appendChild(p);
+      cell(tr,(x.hash||'').slice(0,16)+'…',null,EXP+'block/'+x.hash);b.appendChild(tr)})}
+    var p=$('pay-rows');if(s.payments.length){p.textContent='';s.payments.forEach(function(x){var tr=document.createElement('tr');
+      cell(tr,ago(x.ts));cell(tr,x.addresses);cell(tr,bcn(x.amount));cell(tr,(x.tx||'').slice(0,16)+'…',null,EXP+'tx/'+x.tx);p.appendChild(tr)})}
+  }).catch(function(){$('s-updated').textContent='Pool statistics are not available right now.'});
+}
+function lookup(a){
+  var out=$('miner-out');out.textContent='Loading…';
+  if(!/^(2|bcnZ)[1-9A-HJ-NP-Za-km-z]{90,105}$/.test(a)){out.textContent='That does not look like a BCN address.';return}
+  try{localStorage.setItem('bcn-pool-address',a)}catch(e){}
+  get('api/miners/'+a+'.json').then(function(m){
+    out.textContent='';
+    var d=document.createElement('div');d.className='stats';
+    [[hr(m.hashrate),'hashrate (10 min)'],[(m.workers||[]).length?m.workers.join(', '):'none','workers'],[bcn(m.pending)+' BCN','pending balance'],[bcn(m.paid)+' BCN','paid in total']].forEach(function(v){
+      var s=document.createElement('div');s.className='stat';var b=document.createElement('b');b.textContent=v[0];var sp=document.createElement('span');sp.textContent=v[1];s.appendChild(b);s.appendChild(sp);d.appendChild(s)});
+    out.appendChild(d);
+    if(m.payments&&m.payments.length){var t=document.createElement('table');t.style.marginTop='12px';var tb=document.createElement('tbody');
+      m.payments.forEach(function(x){var tr=document.createElement('tr');cell(tr,ago(x.ts));cell(tr,bcn(x.amount)+' BCN');cell(tr,(x.tx||'').slice(0,16)+'…',null,EXP+'tx/'+x.tx);tb.appendChild(tr)});
+      t.appendChild(tb);out.appendChild(t)}
+  }).catch(function(){out.textContent='No shares from this address yet. It appears here a few minutes after your miner starts.'});
+}
+$('lookup').addEventListener('submit',function(e){e.preventDefault();lookup($('addr').value.trim())});
+try{var saved=localStorage.getItem('bcn-pool-address');if(saved){$('addr').value=saved;lookup(saved)}}catch(e){}
+load();setInterval(load,30000);
+</script>
+</body>
+</html>

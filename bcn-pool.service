@@ -1,0 +1,20 @@
+[Unit]
+Description=Bytecoin open mining pool (0% fee, PPLNS)
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+User=bcn-pool
+Group=bcn-pool
+EnvironmentFile=/etc/bcn-pool.env
+ExecStart=/usr/bin/python3 -I /opt/bcn-pool/pool.py --listen 0.0.0.0:3333 --walletd http://127.0.0.1:18071/json_rpc
+Restart=on-failure
+RestartSec=10
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/bcn-pool
+
+[Install]
+WantedBy=multi-user.target
